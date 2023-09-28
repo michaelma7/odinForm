@@ -26,7 +26,7 @@
                     You <em>know</em> you want to.
                 </p>
             </div>
-            <form>
+            <form novalidate>
                 <fieldset class="inputs">
                     <p class="row1">Let's do this!</p>
                     <p>
@@ -41,7 +41,7 @@
                     
                     <p>
                         <label for="email">EMAIL</label>
-                        <input type="email" id="email" name = "email" required />
+                        <input type="email" id="email" name = "email" placeholder="Enter your Email" required />
                     </p>
                     
                     <p>
@@ -51,20 +51,49 @@
                     
                     <p>
                         <label for="password">PASSWORD</label>
-                        <input type="password" id="password" name = "password" required error/>
+                        <input type="password" id="password" name = "password" autocomplete="new-password" required />
+                        <span class="noerror" aria-live="polite"></span>
                     </p>
                     
                     <p>
                         <label for="confirm">CONFIRM PASSWORD</label>
-                        <input type="password" id="confirm" name = "confirm" pattern="" required error/>
+                        <input type="password" id="confirm" name = "confirm" required />
+                        <span class="noerror" aria-live="polite"></span>
                     </p>
                 </fieldset>
                 
-                    <button type="submit" method="post">Create Account</button>
+                    <button type="submit" class="submit" method="post">Create Account</button>
                 
             </form>
             <p>Already have an account? <a href="/login.html">Log in</a></p>
         </div>
     </div>    
 </body>
+<script>
+    const confirm = document.querySelector('#confirm');
+    const error = document.querySelector('span.noerror');
+    const submit = document.querySelector('button.submit');
+    submit.addEventListener('submit', (e) => {
+        if (!confirm.validity.valid) {
+            showError();
+            e.preventDefault();
+        };
+        validateForm(document.querySelector('#password').value, confirm.value);
+    });
+    confirm.addEventListener('input', (e) => validateForm(document.querySelector('#password').value, document.querySelector('#confirm').value));
+
+    function validateForm(text1, text2) {
+        if(text1 !== text2) {
+            showError();
+        } else {
+            error.textContent = '';
+            error.className = 'noerror';
+        };
+    }
+    
+    function showError() {
+        error.textContent = "*Passwords do not match";
+        error.className = "error";
+    }
+</script>
 </html>
